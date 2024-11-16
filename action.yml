@@ -1,5 +1,5 @@
 name: "Hostinger Deploy"
-description: "A composite action to push your built site to Hostinger"
+description: "A composite GitHub Action to streamline and automate the deployment of your site to Hostinger."
 branding:
   icon: 'upload-cloud'
   color: 'blue'
