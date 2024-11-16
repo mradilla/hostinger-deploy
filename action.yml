@@ -1,0 +1,26 @@
+name: "Hostinger Deploy"
+description: "A composite action to push your built site to Hostinger"
+branding:
+  icon: 'upload-cloud'
+  color: 'blue'
+inputs:
+  source-path:
+    description: "Path of the directory containing your site (out, dist, build)"
+    required: true
+  domain:
+    description: "Your domain in Hostinger (example.com)"
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Upload to Hostinger
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.HOSTINGER_HOST }}
+        username: ${{ secrets.HOSTINGER_USERNAME }}
+        password: ${{ secrets.HOSTINGER_PASSWORD }}
+        port: ${{ secrets.HOSTINGER_PORT }}
+        source: "${{ inputs.source-path }}/*"
+        target: "domains/${{ inputs.domain }}/public_html/"
+        strip_components: 1
