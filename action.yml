@@ -10,6 +10,18 @@ inputs:
   domain:
     description: "Your domain in Hostinger (example.com)"
     required: true
+  host:
+    required: true
+    description: "Hostinger SSH host"
+  port:
+    required: true
+    description: "Hostinger SSH port"
+  username:
+    required: true
+    description: "Hostinger SSH username"
+  password:
+    required: true
+    description: "Hostinger SSH password"
 
 runs:
   using: composite
@@ -17,10 +29,10 @@ runs:
     - name: Upload to Hostinger
       uses: appleboy/scp-action@v0.1.7
       with:
-        host: ${{ secrets.HOSTINGER_HOST }}
-        username: ${{ secrets.HOSTINGER_USERNAME }}
-        password: ${{ secrets.HOSTINGER_PASSWORD }}
-        port: ${{ secrets.HOSTINGER_PORT }}
+        host: ${{ inputs.host }}
+        port: ${{ inputs.port }}
+        username: ${{ inputs.username }}
+        password: ${{ inputs.password }}
         source: "${{ inputs.source-path }}/*"
         target: "domains/${{ inputs.domain }}/public_html/"
         strip_components: 1
