@@ -1,6 +1,7 @@
 # Deploy site to Hostinger
 
-This GitHub Action simplifies deploying your site to a live domain hosted on [Hostinger](https://www.hostinger.com). It uploads the contents of your output directory to your domain's `public_html` folder, ensuring your site goes live seamlessly.
+This GitHub Action simplifies deploying your built site to a live domain hosted on [Hostinger](https://www.hostinger.com). It uploads the contents of your output directory to your domain's `public_html` folder using [SCP Command GitHub Action](https://github.com/marketplace/actions/scp-command-to-transfer-files) for secure SSH file transfers.
+
 
 Note: There's no need to push your dist files to the repository. This action handles the deployment automatically.
 
@@ -10,7 +11,7 @@ Note: There's no need to push your dist files to the repository. This action han
 To use this action, you must [enable SSH Access](https://support.hostinger.com/en/articles/1583645-how-to-enable-ssh-access) in your Hostinger panel.
 
 ### 2. Set Repository Secrets
-Add the following secrets in your GitHub repository under **Settings > Secrets and Variables > Actions**. You can find these details in your Hostinger control panel:
+Add the following secrets in your GitHub repository under **Settings > Secrets and Variables > Actions**. These secrets will need to be passed as inputs to the action (see the `Usage` section for an example):
 
 - **`HOSTINGER_HOST`**: Your Hostinger server's hostname or IP address (e.g., `192.168.1.1`).
 - **`HOSTINGER_PORT`**: Your Hostinger server's port (e.g., `1000`).
@@ -19,11 +20,10 @@ Add the following secrets in your GitHub repository under **Settings > Secrets a
 
 ## Inputs
 
-| Input         | Required | Description                                                                                  |
-|---------------|----------|----------------------------------------------------------------------------------------------|
-| `domain`      | Yes      | Your domain name registered in Hostinger.                                                   |
-| `source-path` | Yes      | The directory containing your built site (e.g., `dist`, `out`, `build`).                     |
-
+| Input         | Required | Description                              |
+|---------------|----------|------------------------------------------|
+| `domain`      | Yes      | Your domain name registered in Hostinger. |
+| `source-path` | Yes      | The directory containing your built site (e.g., `dist`). |
 
 ## Usage
 
@@ -44,7 +44,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -56,15 +56,15 @@ jobs:
       - name: Build project
         run: npm run build # Replace with your project's build command
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy to Hostinger
+      - name: Upload files to Hostinger
         uses: mradilla/hostinger-deploy@v1
         with:
           domain: example.com    # Replace with your Hostinger domain
           source-path: dist      # Replace with your build directory (e.g., out, dist, build)
+          host: ${{ secrets.HOSTINGER_HOST }}
+          port: ${{ secrets.HOSTINGER_PORT }}
+          username: ${{ secrets.HOSTINGER_USERNAME }}
+          password: ${{ secrets.HOSTINGER_PASSWORD }}
 ```
 
 ## Notes & Troubleshooting
