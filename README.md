@@ -20,10 +20,16 @@ Add the following secrets in your GitHub repository under **Settings > Secrets a
 
 ## Inputs
 
-| Input         | Required | Description                              |
-|---------------|----------|------------------------------------------|
-| `domain`      | Yes      | Your domain name registered in Hostinger. |
-| `source-path` | Yes      | The directory containing your built site (e.g., `dist`). |
+
+### Inputs
+| Input           | Required | Description                                                         |
+|-----------------|----------|---------------------------------------------------------------------|
+| `domain`        | Yes      | Your domain name registered in Hostinger.                            |
+| `source-path`   | Yes      | The directory containing your built site (e.g., `dist`).             |
+| `host`          | Yes      | Use `${{ secrets.HOSTINGER_HOST }}`.                                 |
+| `port`          | Yes      | Use `${{ secrets.HOSTINGER_PORT }}`.                                 |
+| `username`      | Yes      | Use `${{ secrets.HOSTINGER_USERNAME }}`.                              |
+| `password`      | Yes      | Use `${{ secrets.HOSTINGER_PASSWORD }}`.                              |
 
 ## Usage
 
