@@ -63,6 +63,7 @@ jobs:
         run: npm run build # Replace with your project's build command
 
       - name: Upload files to Hostinger
+        # This composite action must run in the same build job to access the build directory
         uses: mradilla/hostinger-deploy@v1
         with:
           domain: example.com    # Replace with your Hostinger domain
